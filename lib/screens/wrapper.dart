@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_job_portal/screens/authenticate/authenticate.dart';
 import 'package:flutter_job_portal/screens/ui/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_job_portal/models/user.dart';
@@ -11,7 +12,7 @@ class Wrapper extends StatelessWidget {
       print('not logged!');
 
       // return Authenticate();
-      return HomePage();
+      return Authenticate();
     } else {
       print('logged in!');
       return HomePage();

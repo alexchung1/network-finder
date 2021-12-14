@@ -8,9 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter_job_portal/service/auth.dart';
 
 //user's response will be assigned to this variable
 String job = '';
+final AuthService _auth = AuthService();
 //key created to interact with the form
 final _formkey = GlobalKey<FormState>();
 
@@ -69,7 +71,9 @@ class HomePage extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.person),
           tooltip: 'Logout',
-          onPressed: () {},
+          onPressed: () async {
+            await _auth.signOut();
+          },
         ),
       ],
     );

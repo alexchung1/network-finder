@@ -18,7 +18,7 @@ def jobRoute():
         request_data = json.loads(request_data.decode('utf-8')) #converting it from json to key value pair
         job = request_data['job'] #assigning it to job
 
-        for i in range(0,30,15): #loops through each page
+        for i in range(0,75,15): #loops through each page
             print(f'Getting page {math.floor((i/15)+1)}')
             if(job != ''):
                 c = extract(job, 'nyc', 0) 
