@@ -1,6 +1,8 @@
 // ignore_for_file: unused_local_variable, invalid_use_of_protected_member
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_job_portal/.theme/colors.dart';
+import 'package:flutter_job_portal/models/user.dart';
 import 'package:flutter_job_portal/screens/authenticate/theme.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +11,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter_job_portal/service/auth.dart';
+import 'package:provider/provider.dart';
 
 //user's response will be assigned to this variable
 String job = '';
+String uid = '';
+var collection = Firestore.instance.collection('users');
+
 final AuthService _auth = AuthService();
+
 //key created to interact with the form
 final _formkey = GlobalKey<FormState>();
 
@@ -87,7 +94,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hey, Alex!",
+            "Hey, friend!",
             style: GoogleFonts.raleway(
               color: Colors.white,
               fontWeight: FontWeight.w600,
@@ -210,7 +217,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    final user = Provider.of<User>(context);
+    uid = user.uid;
+    return Scaffold(
       backgroundColor: Colors.grey[900],
       // bottomNavigationBar: BottomMenuBar(),
       body: SafeArea(

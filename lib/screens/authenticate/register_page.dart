@@ -1,4 +1,5 @@
 import 'package:flutter_job_portal/screens/authenticate/login_page.dart';
+import 'package:flutter_job_portal/service/database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'theme.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   ),
                                 ),
                                 onChanged: (val) {
-                                  setState(() => email = val);
+                                  setState(() => name = val);
                                 }),
                           ),
                           SizedBox(
@@ -185,6 +186,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 .registerWithEmailAndPassword(email, password);
                             if (result == null) {
                               setState(() => loading = false);
+                            } else {
+                              DatabaseService(uid: result.uid)
+                                  .updateUserData(name);
                             }
                           }
                         }),

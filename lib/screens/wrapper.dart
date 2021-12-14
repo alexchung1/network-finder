@@ -10,7 +10,6 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<User>(context);
     if (user == null) {
       print('not logged!');
-
       // return Authenticate();
       return Authenticate();
     } else {
