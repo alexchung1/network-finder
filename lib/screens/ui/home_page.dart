@@ -94,7 +94,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hey, friend!",
+            "Welcome, friend!",
             style: GoogleFonts.raleway(
               color: Colors.white,
               fontWeight: FontWeight.w600,
@@ -162,6 +162,114 @@ class HomePage extends StatelessWidget {
     );
   }
 
+   Widget _recommendedSection(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      margin: EdgeInsets.symmetric(vertical: 6),
+      height: 200,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Recommended",
+            style: GoogleFonts.raleway(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+              letterSpacing: .5,
+            ),
+          ),
+          SizedBox(height: 10),
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _recommendedJob(context,
+                    company: "Google",
+                    title: "Software Engineer",
+                    sub: "\$125,000 Remote",
+                    isActive: true),
+                _recommendedJob(context,
+                    company: "DropBox",
+                    title: "Research Assist",
+                    sub: "\$45,000 Remote",
+                    isActive: false)
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _recommendedJob(
+    BuildContext context, {
+    String img,
+    String company,
+    String title,
+    String sub,
+    bool isActive = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: GestureDetector(
+        onTap: () {
+        },
+        child: AspectRatio(
+          aspectRatio: 1.3,
+          child: Container(
+            decoration: BoxDecoration(
+              color: isActive ? KColors.primary : Colors.white,
+              borderRadius: BorderRadius.circular(7),
+            ),
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 40,
+                  width: 40,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: isActive ? Colors.white : KColors.lightGrey,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+
+                ),
+                SizedBox(height: 16),
+                Text(
+                  company,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: isActive ? Colors.white38 : KColors.subtitle,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: isActive ? Colors.white : KColors.title,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  sub,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: isActive ? Colors.white38 : KColors.subtitle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   // Search results of jobs
   StreamBuilder<List<Job>> _jobSearch() {
     return StreamBuilder(
@@ -217,9 +325,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    uid = user.uid;
-    return Scaffold(
+    return new Scaffold(
       backgroundColor: Colors.grey[900],
       // bottomNavigationBar: BottomMenuBar(),
       body: SafeArea(
@@ -232,6 +338,7 @@ class HomePage extends StatelessWidget {
               children: [
                 _appBar(context),
                 _header(context),
+                _recommendedSection(context),
                 _jobSearch(),
               ],
             ),
