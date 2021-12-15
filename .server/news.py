@@ -22,12 +22,12 @@ def topNews():
         title = ar['title']
         description = ar['description']
         url = ar['url']
-        img = ar['urlToImage'],
+        image = ar['urlToImage'],
         news = {
             'Title' : title,
             'Description' : description,
+            'Photo_url' : image[0],
             'Url' : url,
-            'Img' : img,
         }
         results.append(news)
     return

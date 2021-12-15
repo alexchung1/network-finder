@@ -35,9 +35,10 @@ class Job {
 class News {
   final String title;
   final String description;
+  final String photo_url;
   final String url;
 
-  News(this.title, this.description, this.url);
+  News(this.title, this.description, this.photo_url, this.url);
 }
 
 class HomePage extends StatelessWidget {
@@ -177,7 +178,7 @@ class HomePage extends StatelessWidget {
       print(decoded.length);
 
       for (var i in decoded) {
-        News news = News(i['Title'], i['Description'], i['Url']);
+        News news = News(i['Title'], i['Description'], i['Photo_url'], i['Url']);
         topNews.add(news);
       }
       if (topNews.isEmpty != true) {
@@ -211,7 +212,7 @@ class HomePage extends StatelessWidget {
               children: [
                 for (var i in topNews)
                   _newsArticle(context,
-                      title: i.title, description: i.description, img: '')
+                      title: i.title, description: i.description, url: i.url)
               ],
             ),
           ),
@@ -234,7 +235,7 @@ class HomePage extends StatelessWidget {
     BuildContext context, {
     String title,
     String description,
-    String img,
+    String url,
     bool isActive = false,
   }) {
     return Padding(
@@ -280,7 +281,7 @@ class HomePage extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 Text(
-                  img,
+                  url,
                   style: TextStyle(
                     fontSize: 12,
                     color: isActive ? Colors.white38 : KColors.subtitle,
