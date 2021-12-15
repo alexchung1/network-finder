@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_job_portal/screens/ui/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_job_portal/models/user.dart';
 import 'package:flutter_job_portal/service/auth.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light(),
         // home: Wrapper(),
 
-        home: Wrapper(),
+        home: HomePage(),
         debugShowCheckedModeBanner: false,
       ),
     );

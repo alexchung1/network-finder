@@ -1,17 +1,15 @@
 // ignore_for_file: unused_local_variable, invalid_use_of_protected_member
+import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_job_portal/.theme/colors.dart';
-import 'package:flutter_job_portal/models/user.dart';
-import 'package:flutter_job_portal/screens/authenticate/theme.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_job_portal/service/auth.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_job_portal/.theme/colors.dart';
+import 'package:flutter_job_portal/screens/authenticate/theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //user's response will be assigned to this variable
 String job = '';
@@ -94,7 +92,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Welcome, friend!",
+            "Swipe to find your future!",
             style: GoogleFonts.raleway(
               color: Colors.white,
               fontWeight: FontWeight.w600,
@@ -162,11 +160,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-   Widget _recommendedSection(BuildContext context) {
+  Widget _recommendedSection(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       margin: EdgeInsets.symmetric(vertical: 6),
-      height: 200,
+      height: 210,
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,7 +174,7 @@ class HomePage extends StatelessWidget {
             style: GoogleFonts.raleway(
               color: Colors.white,
               fontWeight: FontWeight.w700,
-              fontSize: 18,
+              fontSize: 16,
               letterSpacing: .5,
             ),
           ),
@@ -198,6 +196,16 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: 15),
+          Text(
+            "  Search results for $job ...",
+            style: GoogleFonts.raleway(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              letterSpacing: .5,
+            ),
+          ),
         ],
       ),
     );
@@ -205,7 +213,6 @@ class HomePage extends StatelessWidget {
 
   Widget _recommendedJob(
     BuildContext context, {
-    String img,
     String company,
     String title,
     String sub,
@@ -214,8 +221,7 @@ class HomePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: GestureDetector(
-        onTap: () {
-        },
+        onTap: () {},
         child: AspectRatio(
           aspectRatio: 1.3,
           child: Container(
@@ -227,16 +233,15 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: 40,
-                  width: 40,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: isActive ? Colors.white : KColors.lightGrey,
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-
-                ),
+                // Container(
+                //   height: 40,
+                //   width: 40,
+                //   padding: EdgeInsets.all(10),
+                //   decoration: BoxDecoration(
+                //     color: isActive ? Colors.white : KColors.lightGrey,
+                //     borderRadius: BorderRadius.circular(7),
+                //   ),
+                // ),
                 SizedBox(height: 16),
                 Text(
                   company,
@@ -294,10 +299,9 @@ class HomePage extends StatelessWidget {
                 ),
                 child: ListTile(
                   trailing: IconButton(
-                    icon: Icon(Icons.favorite),
-                    onPressed: () {
-                      // setState(() {
-                      // Colors.red; // },
+                    icon: Icon(Icons.attachment_outlined),
+                    onPressed: () async{
+                      await launch(snapshot.data[index].url, forceSafariVC: false);
                     },
                   ),
                   title: Text(snapshot.data[index].company,
