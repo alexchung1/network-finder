@@ -2,6 +2,7 @@ from flask import Flask, request
 import pandas as pd
 import json, math
 from working import *
+from news import *
 
 response = ''
 
@@ -24,13 +25,19 @@ def jobRoute():
                 c = extract(job, 'nyc', 0) 
                 transform(c)
             df = pd.DataFrame(jobList)
-
-        print(df.head(2));
         return '' #to avoid a type error 
     else:
         data = json.dumps(jobList, indent=2)
         del jobList[:]
         return data #sending data back to your frontend app
+
+@app.route('/news', methods = ['GET'])
+def index():
+    topNews()
+    news = json.dumps(results, indent=2)
+    del results[:]
+    return news
+
             
 
 if __name__ == "__main__":

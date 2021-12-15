@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 //user's response will be assigned to this variable
 String job = '';
 String uid = '';
+List<News> topNews = [];
 var collection = Firestore.instance.collection('users');
 
 final AuthService _auth = AuthService();
@@ -29,6 +30,14 @@ class Job {
   final String url;
 
   Job(this.title, this.company, this.location, this.salary, this.url);
+}
+
+class News {
+  final String title;
+  final String description;
+  final String url;
+
+  News(this.title, this.description, this.url);
 }
 
 class HomePage extends StatelessWidget {
@@ -161,6 +170,23 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _recommendedSection(BuildContext context) {
+    _getNews() async {
+      final response = await http.get(Uri.parse('http://10.0.2.2:5000/news'));
+      final decoded = json.decode(response.body);
+
+      print(decoded.length);
+
+      for (var i in decoded) {
+        News news = News(i['Title'], i['Description'], i['Url']);
+        topNews.add(news);
+      }
+      if (topNews.isEmpty != true) {
+        return topNews;
+      }
+    }
+
+    _getNews();
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       margin: EdgeInsets.symmetric(vertical: 6),
@@ -183,16 +209,9 @@ class HomePage extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                _recommendedJob(context,
-                    company: "Google",
-                    title: "Software Engineer",
-                    sub: "\$125,000 Remote",
-                    isActive: true),
-                _recommendedJob(context,
-                    company: "DropBox",
-                    title: "Research Assist",
-                    sub: "\$45,000 Remote",
-                    isActive: false)
+                for (var i in topNews)
+                  _newsArticle(context,
+                      title: i.title, description: i.description, img: '')
               ],
             ),
           ),
@@ -211,11 +230,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _recommendedJob(
+  Widget _newsArticle(
     BuildContext context, {
-    String company,
     String title,
-    String sub,
+    String description,
+    String img,
     bool isActive = false,
   }) {
     return Padding(
@@ -244,9 +263,9 @@ class HomePage extends StatelessWidget {
                 // ),
                 SizedBox(height: 16),
                 Text(
-                  company,
+                  description,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 10,
                     color: isActive ? Colors.white38 : KColors.subtitle,
                   ),
                 ),
@@ -254,14 +273,14 @@ class HomePage extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 8,
                     color: isActive ? Colors.white : KColors.title,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 6),
                 Text(
-                  sub,
+                  img,
                   style: TextStyle(
                     fontSize: 12,
                     color: isActive ? Colors.white38 : KColors.subtitle,
@@ -300,8 +319,9 @@ class HomePage extends StatelessWidget {
                 child: ListTile(
                   trailing: IconButton(
                     icon: Icon(Icons.attachment_outlined),
-                    onPressed: () async{
-                      await launch(snapshot.data[index].url, forceSafariVC: false);
+                    onPressed: () async {
+                      await launch(snapshot.data[index].url,
+                          forceSafariVC: false);
                     },
                   ),
                   title: Text(snapshot.data[index].company,
