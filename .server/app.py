@@ -24,7 +24,6 @@ def jobRoute():
             if(job != ''):
                 c = extract(job, 'nyc', 0) 
                 transform(c)
-            df = pd.DataFrame(jobList)
         return '' #to avoid a type error 
     else:
         data = json.dumps(jobList, indent=2)
@@ -34,11 +33,10 @@ def jobRoute():
 @app.route('/news', methods = ['GET'])
 def index():
     topNews()
-    news = json.dumps(results, indent=2)
+    data = json.dumps(results, indent=2)
     del results[:]
-    return news
+    return data
 
-            
 
 if __name__ == "__main__":
     app.run(debug=True)

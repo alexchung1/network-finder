@@ -35,10 +35,10 @@ class Job {
 class News {
   final String title;
   final String description;
-  final String photo_url;
+  final String image;
   final String url;
 
-  News(this.title, this.description, this.photo_url, this.url);
+  News(this.title, this.description, this.image, this.url);
 }
 
 class HomePage extends StatelessWidget {
@@ -178,7 +178,7 @@ class HomePage extends StatelessWidget {
       print(decoded.length);
 
       for (var i in decoded) {
-        News news = News(i['Title'], i['Description'], i['Photo_url'], i['Url']);
+        News news = News(i['Title'], i['Description'], i['Image'], i['Url']);
         topNews.add(news);
       }
       if (topNews.isEmpty != true) {
@@ -197,7 +197,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recommended",
+            "Top News",
             style: GoogleFonts.raleway(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -212,7 +212,10 @@ class HomePage extends StatelessWidget {
               children: [
                 for (var i in topNews)
                   _newsArticle(context,
-                      title: i.title, description: i.description, url: i.url)
+                      title: i.title,
+                      description: i.description,
+                      image: i.image,
+                      url: i.url)
               ],
             ),
           ),
@@ -235,8 +238,8 @@ class HomePage extends StatelessWidget {
     BuildContext context, {
     String title,
     String description,
+    String image,
     String url,
-    bool isActive = false,
   }) {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
@@ -246,45 +249,28 @@ class HomePage extends StatelessWidget {
           aspectRatio: 1.3,
           child: Container(
             decoration: BoxDecoration(
-              color: isActive ? KColors.primary : Colors.white,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(7),
             ),
             padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Container(
-                //   height: 40,
-                //   width: 40,
-                //   padding: EdgeInsets.all(10),
-                //   decoration: BoxDecoration(
-                //     color: isActive ? Colors.white : KColors.lightGrey,
-                //     borderRadius: BorderRadius.circular(7),
-                //   ),
-                // ),
                 SizedBox(height: 16),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: isActive ? Colors.white38 : KColors.subtitle,
-                  ),
-                ),
-                SizedBox(height: 6),
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 8,
-                    color: isActive ? Colors.white : KColors.title,
+                    fontSize: 10,
+                    color:Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 6),
                 Text(
-                  url,
+                  description,
                   style: TextStyle(
-                    fontSize: 12,
-                    color: isActive ? Colors.white38 : KColors.subtitle,
+                    fontSize: 8,
+                    color: Colors.grey[500],
                   ),
                 ),
               ],

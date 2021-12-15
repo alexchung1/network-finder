@@ -35,10 +35,5 @@ def transform(soup):
     
 jobList = []
 
-# for testing
-# a = extract('swe', 'nyc', 0)
-# transform(a)
-# data = json.dumps(jobList, indent = 2)
-# print(data)
 
     
