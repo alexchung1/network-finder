@@ -4,7 +4,7 @@ def topNews():
     query_params = {
       "source": "bbc-news",
       "sortBy": "top",
-      "apiKey": "93a2782a541b438f9ffa4235454ae016"
+      "apiKey": "10b7a1938f0b49acaa670aa9d12719d2"
     }
     main_url = " https://newsapi.org/v1/articles"
  
@@ -21,8 +21,8 @@ def topNews():
     for ar in article:
         title = ar['title']
         description = ar['description']
-        url = ar['url']
         image = ar['urlToImage'],
+        url = ar['url']
         news = {
             'Title' : title,
             'Description' : description,

@@ -178,7 +178,8 @@ class HomePage extends StatelessWidget {
       print(decoded.length);
 
       for (var i in decoded) {
-        News news = News(i['Title'], i['Description'], i['Image'], i['Url']);
+        News news =
+            News(i['Title'], i['Description'], i['Photo_url'], i['Url']);
         topNews.add(news);
       }
       if (topNews.isEmpty != true) {
@@ -191,7 +192,7 @@ class HomePage extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       margin: EdgeInsets.symmetric(vertical: 6),
-      height: 210,
+      height: 300,
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,7 +245,9 @@ class HomePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 10),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () async {
+          await launch(url, forceSafariVC: false);
+        },
         child: AspectRatio(
           aspectRatio: 1.3,
           child: Container(
@@ -252,25 +255,28 @@ class HomePage extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(7),
             ),
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.network(
+                      image,
+                      height: 150.0,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
                 SizedBox(height: 16),
                 Text(
                   title,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 10,
-                    color:Colors.black,
+                    fontSize: 12,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 8,
-                    color: Colors.grey[500],
                   ),
                 ),
               ],
